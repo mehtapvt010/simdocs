@@ -41,6 +41,10 @@ export const get = query({
       return await ctx.db.query("documents").withSearchIndex("search_title", (q) => q.search("title", args.search!).eq("ownerId", user.subject)).paginate(args.paginationOpts);
     }
 
+    if(organizationId){
+      return await ctx.db.query("documents").withIndex("by_organization_id", (q) => q.eq("organizationId", organizationId)).paginate(args.paginationOpts);
+    }
+
     return await ctx.db.query("documents").withIndex("by_owner_id", (q) => q.eq("ownerId", user.subject)).paginate(args.paginationOpts);
   },
 });
